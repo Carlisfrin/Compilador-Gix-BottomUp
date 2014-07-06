@@ -1,0 +1,21 @@
+#Esto es un comentario
+macro line(int x, int y) {
+	loop i:0,x{	#declares the variable in the scope for the loop
+		circle(2, 3, y, 5);
+	}
+}
+
+macro main(){
+	int k;
+	k = 2;
+	loop i:0, 3{
+		rect(i, 2*i+1, 0.4, 0xff);
+	}
+	loop j:0, 2{
+		rect(j, k, 0.4, 0xff);
+		k = j;
+	}
+	line(k, 4);
+}
+
+

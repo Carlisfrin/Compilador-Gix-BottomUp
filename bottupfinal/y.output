@@ -1,0 +1,594 @@
+
+state 0
+	$accept: .MACROS $end 
+
+	macro  shift 3
+	.  error
+
+	MACRO  goto 2
+	MACROS  goto 1
+
+state 1
+	$accept:  MACROS.$end 
+	MACROS:  MACROS.MACRO 
+
+	$end  accept
+	macro  shift 3
+	.  error
+
+	MACRO  goto 4
+
+state 2
+	MACROS:  MACRO.    (2)
+
+	.  reduce 2 (src line 44)
+
+
+state 3
+	MACRO:  macro.VAR ( PARAMS $$3 ) { DECLS SENTS } 
+
+	nombre  shift 6
+	.  error
+
+	VAR  goto 5
+
+state 4
+	MACROS:  MACROS MACRO.    (1)
+
+	.  reduce 1 (src line 42)
+
+
+state 5
+	MACRO:  macro VAR.( PARAMS $$3 ) { DECLS SENTS } 
+
+	(  shift 7
+	.  error
+
+
+state 6
+	VAR:  nombre.    (7)
+
+	.  reduce 7 (src line 77)
+
+
+state 7
+	MACRO:  macro VAR (.PARAMS $$3 ) { DECLS SENTS } 
+	PARAMS: .    (21)
+
+	.  reduce 21 (src line 163)
+
+	PARAMS  goto 8
+
+state 8
+	MACRO:  macro VAR ( PARAMS.$$3 ) { DECLS SENTS } 
+	PARAMS:  PARAMS.PARAM NEXT_PARAM 
+	$$3: .    (3)
+
+	tipo  shift 12
+	.  reduce 3 (src line 48)
+
+	TIPO  goto 11
+	PARAM  goto 10
+	$$3  goto 9
+
+state 9
+	MACRO:  macro VAR ( PARAMS $$3.) { DECLS SENTS } 
+
+	)  shift 13
+	.  error
+
+
+state 10
+	PARAMS:  PARAMS PARAM.NEXT_PARAM 
+	NEXT_PARAM: .    (19)
+
+	,  shift 15
+	.  reduce 19 (src line 157)
+
+	NEXT_PARAM  goto 14
+
+state 11
+	PARAM:  TIPO.VAR 
+
+	nombre  shift 6
+	.  error
+
+	VAR  goto 16
+
+state 12
+	TIPO:  tipo.    (14)
+
+	.  reduce 14 (src line 127)
+
+
+state 13
+	MACRO:  macro VAR ( PARAMS $$3 ).{ DECLS SENTS } 
+
+	{  shift 17
+	.  error
+
+
+state 14
+	PARAMS:  PARAMS PARAM NEXT_PARAM.    (22)
+
+	.  reduce 22 (src line 165)
+
+
+state 15
+	NEXT_PARAM:  ,.PARAM 
+
+	tipo  shift 12
+	.  error
+
+	TIPO  goto 11
+	PARAM  goto 18
+
+state 16
+	PARAM:  TIPO VAR.    (18)
+
+	.  reduce 18 (src line 146)
+
+
+state 17
+	MACRO:  macro VAR ( PARAMS $$3 ) {.DECLS SENTS } 
+	DECLS: .    (15)
+
+	.  reduce 15 (src line 130)
+
+	DECLS  goto 19
+
+state 18
+	NEXT_PARAM:  , PARAM.    (20)
+
+	.  reduce 20 (src line 159)
+
+
+state 19
+	MACRO:  macro VAR ( PARAMS $$3 ) { DECLS.SENTS } 
+	DECLS:  DECLS.DECL 
+	SENTS: .    (23)
+
+	tipo  shift 12
+	.  reduce 23 (src line 181)
+
+	TIPO  goto 11
+	DECL  goto 21
+	SENTS  goto 20
+	PARAM  goto 22
+
+state 20
+	MACRO:  macro VAR ( PARAMS $$3 ) { DECLS SENTS.} 
+	SENTS:  SENTS.SENT 
+
+	nombre  shift 6
+	loop  shift 28
+	}  shift 23
+	;  shift 27
+	.  error
+
+	VAR  goto 26
+	SENT  goto 24
+	LOOP  goto 25
+
+state 21
+	DECLS:  DECLS DECL.    (16)
+
+	.  reduce 16 (src line 132)
+
+
+state 22
+	DECL:  PARAM.; 
+
+	;  shift 29
+	.  error
+
+
+state 23
+	MACRO:  macro VAR ( PARAMS $$3 ) { DECLS SENTS }.    (4)
+
+	.  reduce 4 (src line 54)
+
+
+state 24
+	SENTS:  SENTS SENT.    (24)
+
+	.  reduce 24 (src line 183)
+
+
+state 25
+	SENT:  LOOP.    (25)
+
+	.  reduce 25 (src line 193)
+
+
+state 26
+	SENT:  VAR.STMT ; 
+
+	(  shift 33
+	=  shift 34
+	.  error
+
+	STMT  goto 30
+	FUNC  goto 31
+	ASIG  goto 32
+
+state 27
+	SENT:  ;.    (27)
+
+	.  reduce 27 (src line 208)
+
+
+state 28
+	LOOP:  loop.VAR $$28 : EXPR , EXPR { SENTS } 
+
+	nombre  shift 6
+	.  error
+
+	VAR  goto 35
+
+state 29
+	DECL:  PARAM ;.    (17)
+
+	.  reduce 17 (src line 142)
+
+
+state 30
+	SENT:  VAR STMT.; 
+
+	;  shift 36
+	.  error
+
+
+state 31
+	STMT:  FUNC.    (30)
+
+	.  reduce 30 (src line 248)
+
+
+state 32
+	STMT:  ASIG.    (31)
+
+	.  reduce 31 (src line 249)
+
+
+state 33
+	FUNC:  (.IN_FUNS ) 
+	IN_FUNS: .    (35)
+
+	.  reduce 35 (src line 276)
+
+	IN_FUNS  goto 37
+
+state 34
+	ASIG:  =.EXPR 
+
+	litint  shift 41
+	litfloat  shift 42
+	nombre  shift 6
+	.  error
+
+	LIT  goto 40
+	VAR  goto 39
+	EXPR  goto 38
+
+state 35
+	LOOP:  loop VAR.$$28 : EXPR , EXPR { SENTS } 
+	$$28: .    (28)
+
+	.  reduce 28 (src line 212)
+
+	$$28  goto 43
+
+state 36
+	SENT:  VAR STMT ;.    (26)
+
+	.  reduce 26 (src line 194)
+
+
+state 37
+	IN_FUNS:  IN_FUNS.FIRST_IN IN_FUN 
+	FUNC:  ( IN_FUNS.) 
+	FIRST_IN: .    (33)
+
+	litint  shift 41
+	litfloat  shift 42
+	nombre  shift 6
+	)  shift 45
+	.  reduce 33 (src line 263)
+
+	LIT  goto 40
+	VAR  goto 39
+	EXPR  goto 46
+	FIRST_IN  goto 44
+
+state 38
+	EXPR:  EXPR.+ EXPR 
+	EXPR:  EXPR.- EXPR 
+	EXPR:  EXPR.* EXPR 
+	EXPR:  EXPR./ EXPR 
+	ASIG:  = EXPR.    (38)
+
+	+  shift 47
+	-  shift 48
+	*  shift 49
+	/  shift 50
+	.  reduce 38 (src line 301)
+
+
+state 39
+	EXPR:  VAR.    (12)
+
+	.  reduce 12 (src line 116)
+
+
+state 40
+	EXPR:  LIT.    (13)
+
+	.  reduce 13 (src line 123)
+
+
+state 41
+	LIT:  litint.    (5)
+
+	.  reduce 5 (src line 73)
+
+
+state 42
+	LIT:  litfloat.    (6)
+
+	.  reduce 6 (src line 74)
+
+
+state 43
+	LOOP:  loop VAR $$28.: EXPR , EXPR { SENTS } 
+
+	:  shift 51
+	.  error
+
+
+state 44
+	IN_FUNS:  IN_FUNS FIRST_IN.IN_FUN 
+
+	,  shift 53
+	.  error
+
+	IN_FUN  goto 52
+
+state 45
+	FUNC:  ( IN_FUNS ).    (37)
+
+	.  reduce 37 (src line 289)
+
+
+state 46
+	EXPR:  EXPR.+ EXPR 
+	EXPR:  EXPR.- EXPR 
+	EXPR:  EXPR.* EXPR 
+	EXPR:  EXPR./ EXPR 
+	FIRST_IN:  EXPR.    (34)
+
+	+  shift 47
+	-  shift 48
+	*  shift 49
+	/  shift 50
+	.  reduce 34 (src line 265)
+
+
+state 47
+	EXPR:  EXPR +.EXPR 
+
+	litint  shift 41
+	litfloat  shift 42
+	nombre  shift 6
+	.  error
+
+	LIT  goto 40
+	VAR  goto 39
+	EXPR  goto 54
+
+state 48
+	EXPR:  EXPR -.EXPR 
+
+	litint  shift 41
+	litfloat  shift 42
+	nombre  shift 6
+	.  error
+
+	LIT  goto 40
+	VAR  goto 39
+	EXPR  goto 55
+
+state 49
+	EXPR:  EXPR *.EXPR 
+
+	litint  shift 41
+	litfloat  shift 42
+	nombre  shift 6
+	.  error
+
+	LIT  goto 40
+	VAR  goto 39
+	EXPR  goto 56
+
+state 50
+	EXPR:  EXPR /.EXPR 
+
+	litint  shift 41
+	litfloat  shift 42
+	nombre  shift 6
+	.  error
+
+	LIT  goto 40
+	VAR  goto 39
+	EXPR  goto 57
+
+state 51
+	LOOP:  loop VAR $$28 :.EXPR , EXPR { SENTS } 
+
+	litint  shift 41
+	litfloat  shift 42
+	nombre  shift 6
+	.  error
+
+	LIT  goto 40
+	VAR  goto 39
+	EXPR  goto 58
+
+state 52
+	IN_FUNS:  IN_FUNS FIRST_IN IN_FUN.    (36)
+
+	.  reduce 36 (src line 278)
+
+
+state 53
+	IN_FUN:  ,.EXPR 
+
+	litint  shift 41
+	litfloat  shift 42
+	nombre  shift 6
+	.  error
+
+	LIT  goto 40
+	VAR  goto 39
+	EXPR  goto 59
+
+state 54
+	EXPR:  EXPR.+ EXPR 
+	EXPR:  EXPR + EXPR.    (8)
+	EXPR:  EXPR.- EXPR 
+	EXPR:  EXPR.* EXPR 
+	EXPR:  EXPR./ EXPR 
+
+	*  shift 49
+	/  shift 50
+	.  reduce 8 (src line 80)
+
+
+state 55
+	EXPR:  EXPR.+ EXPR 
+	EXPR:  EXPR.- EXPR 
+	EXPR:  EXPR - EXPR.    (9)
+	EXPR:  EXPR.* EXPR 
+	EXPR:  EXPR./ EXPR 
+
+	*  shift 49
+	/  shift 50
+	.  reduce 9 (src line 89)
+
+
+state 56
+	EXPR:  EXPR.+ EXPR 
+	EXPR:  EXPR.- EXPR 
+	EXPR:  EXPR.* EXPR 
+	EXPR:  EXPR * EXPR.    (10)
+	EXPR:  EXPR./ EXPR 
+
+	.  reduce 10 (src line 98)
+
+
+state 57
+	EXPR:  EXPR.+ EXPR 
+	EXPR:  EXPR.- EXPR 
+	EXPR:  EXPR.* EXPR 
+	EXPR:  EXPR./ EXPR 
+	EXPR:  EXPR / EXPR.    (11)
+
+	.  reduce 11 (src line 107)
+
+
+state 58
+	EXPR:  EXPR.+ EXPR 
+	EXPR:  EXPR.- EXPR 
+	EXPR:  EXPR.* EXPR 
+	EXPR:  EXPR./ EXPR 
+	LOOP:  loop VAR $$28 : EXPR., EXPR { SENTS } 
+
+	,  shift 60
+	+  shift 47
+	-  shift 48
+	*  shift 49
+	/  shift 50
+	.  error
+
+
+state 59
+	EXPR:  EXPR.+ EXPR 
+	EXPR:  EXPR.- EXPR 
+	EXPR:  EXPR.* EXPR 
+	EXPR:  EXPR./ EXPR 
+	IN_FUN:  , EXPR.    (32)
+
+	+  shift 47
+	-  shift 48
+	*  shift 49
+	/  shift 50
+	.  reduce 32 (src line 252)
+
+
+state 60
+	LOOP:  loop VAR $$28 : EXPR ,.EXPR { SENTS } 
+
+	litint  shift 41
+	litfloat  shift 42
+	nombre  shift 6
+	.  error
+
+	LIT  goto 40
+	VAR  goto 39
+	EXPR  goto 61
+
+state 61
+	EXPR:  EXPR.+ EXPR 
+	EXPR:  EXPR.- EXPR 
+	EXPR:  EXPR.* EXPR 
+	EXPR:  EXPR./ EXPR 
+	LOOP:  loop VAR $$28 : EXPR , EXPR.{ SENTS } 
+
+	{  shift 62
+	+  shift 47
+	-  shift 48
+	*  shift 49
+	/  shift 50
+	.  error
+
+
+state 62
+	LOOP:  loop VAR $$28 : EXPR , EXPR {.SENTS } 
+	SENTS: .    (23)
+
+	.  reduce 23 (src line 181)
+
+	SENTS  goto 63
+
+state 63
+	SENTS:  SENTS.SENT 
+	LOOP:  loop VAR $$28 : EXPR , EXPR { SENTS.} 
+
+	nombre  shift 6
+	loop  shift 28
+	}  shift 64
+	;  shift 27
+	.  error
+
+	VAR  goto 26
+	SENT  goto 24
+	LOOP  goto 25
+
+state 64
+	LOOP:  loop VAR $$28 : EXPR , EXPR { SENTS }.    (29)
+
+	.  reduce 29 (src line 218)
+
+
+21 terminals, 23 nonterminals
+39 grammar rules, 65/2000 states
+0 shift/reduce, 0 reduce/reduce conflicts reported
+72 working sets used
+memory: parser 64/30000
+15 extra closures
+80 shift entries, 1 exceptions
+39 goto entries
+20 entries saved by goto default
+Optimizer space used: output 83/30000
+83 table entries, 0 zero
+maximum spread: 21, maximum offset: 63
